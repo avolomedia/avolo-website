@@ -1002,8 +1002,10 @@
       firstName: firstName,
       lastName: lastName,
       email: email,
-      tags: ['Website Terminal'] // This tells GHL to trigger your workflow! //check
+      locationId: '8WAVufk16t3VbdOfWx3C', // Added this line to route it to your sub-account!
+      tags: ['Website Terminal'] 
     };
+
     try {
       const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
         method: 'POST',
@@ -1029,7 +1031,6 @@
       console.error('Submission failed:', error);
     }
   });
-
   // ---------- Reveal on scroll ----------
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
