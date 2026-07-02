@@ -993,29 +993,36 @@
     termResponse.style.color = 'var(--steel)';
     termResponse.textContent = '> executing network request...';
 
-    // Build standard URL-encoded form data to mimic an official GHL form element
-    const params = new URLSearchParams();
-    params.append('formId', 'BhBAAQ58EOFL5R3w5GlY');
-    params.append('first_name', name);
-    params.append('email', email);
+    // Separate first and last name for GHL's API structure
+    const nameParts = name.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || 'Terminal';
+
+    const payload = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      source: 'Website Terminal'
+    };
 
     try {
-      const response = await fetch('https://api.leadconnectorhq.com/widget/form', {
+      const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer pit-a328e0a5-c9bd-4b8c-9244-4c7a8ae3b44a',
+          'Version': '2021-07-28'
         },
-        body: params.toString()
+        body: JSON.stringify(payload)
       });
 
-      // GHL redirects on success, so a 200 status or a redirected response means a total win
-      if (response.ok || response.redirected) {
+      if (response.ok) {
         termResponse.style.color = 'var(--green)';
         termResponse.textContent = '> request queued — response eta < 24h';
         nameInput.value = '';
         emailInput.value = '';
       } else {
-        throw new Error('Gateway handshake refused');
+        throw new Error('API Authorization failed');
       }
     } catch (error) {
       termResponse.style.color = '#C9482E';
