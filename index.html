@@ -975,7 +975,8 @@
   setInterval(pushLog, 2200);
 
   // ---------- Contact terminal ----------
- const submitBtn = document.getElementById('submitBtn');
+ // ---------- Contact terminal ----------
+  const submitBtn = document.getElementById('submitBtn');
   const termResponse = document.getElementById('termResponse');
   const nameInput = document.getElementById('nameInput');
   const emailInput = document.getElementById('emailInput');
@@ -993,10 +994,9 @@
     termResponse.style.color = 'var(--steel)';
     termResponse.textContent = '> executing network request...';
 
-    // Form payload mapping directly to GoHighLevel structural keys
     const formData = new FormData();
-    formData.append('formId', 'BhBAAQ58EOfL5R3w5GIY'); // 👈 REPLACE THIS WITH YOUR ACTUAL FORM ID
-    formData.append('first_name', name);       // Passes name into the First Name field
+    formData.append('formId', 'BhBAAQ58EOFL5R3w5GlY'); 
+    formData.append('first_name', name);       
     formData.append('email', email);
 
     try {
@@ -1019,3 +1019,19 @@
       console.error('GHL submission failed:', error);
     }
   });
+
+  // ---------- Reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
